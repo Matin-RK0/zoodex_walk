@@ -39,7 +39,7 @@ class CustomGradientCardWithCircles extends StatelessWidget {
                   width: 780,
                   height: 780,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.20),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -51,7 +51,7 @@ class CustomGradientCardWithCircles extends StatelessWidget {
                   width: 680,
                   height: 680,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.20),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -63,7 +63,7 @@ class CustomGradientCardWithCircles extends StatelessWidget {
                   width: 580,
                   height: 580,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.20),
                     shape: BoxShape.circle,
                   ),
                 ),
