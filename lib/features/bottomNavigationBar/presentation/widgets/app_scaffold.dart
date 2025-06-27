@@ -11,20 +11,17 @@ class AppScaffold extends StatelessWidget {
   const AppScaffold({super.key});
 
   static const _pages = <Widget>[
+    ProfilePage(),
     HomePage(),
     MapPage(),
     OrdersPage(),
-    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final nav = context.watch<NavigationProvider>();
     return Scaffold(
-      body: IndexedStack(
-        index: nav.currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: nav.currentIndex, children: _pages),
       bottomNavigationBar: const CustomBottomNav(),
     );
   }
