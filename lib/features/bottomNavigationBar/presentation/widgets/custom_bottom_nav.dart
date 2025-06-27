@@ -12,7 +12,7 @@ class CustomBottomNav extends StatelessWidget {
     final nav = context.watch<NavigationProvider>();
 
     return Container(
-      height: 60,
+      height: 70,
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [

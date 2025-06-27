@@ -36,7 +36,7 @@ class NavItem extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 SvgPicture.network(
                   displayUrl,
                   width: 24,
