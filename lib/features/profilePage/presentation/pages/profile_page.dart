@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-// این ویجت سفارشی جدید است که ظاهر مورد نظر شما را پیاده‌سازی می‌کند
+//! A custom expandable tile with a specific design.
 class StyledExpansionTile extends StatefulWidget {
-  // لیستی از ویجت‌ها که در حالت باز شده نمایش داده می‌شوند
   final List<Widget> children;
-  // برای تنظیم اینکه ویجت به صورت پیش‌فرض باز باشد یا نه
   final bool initiallyExpanded;
 
   const StyledExpansionTile({
@@ -19,6 +17,7 @@ class StyledExpansionTile extends StatefulWidget {
 
 class _StyledExpansionTileState extends State<StyledExpansionTile>
     with SingleTickerProviderStateMixin {
+  //! Manages the expanded/collapsed state.
   late bool _isExpanded;
 
   @override
@@ -30,13 +29,10 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
   @override
   Widget build(BuildContext context) {
     return Container(
-      // این کانتینر دور کل ویجت قرار می‌گیرد و به آن استایل می‌دهد
       padding: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        // می‌توانید یک سایه یا حاشیه هم اضافه کنید
-        // border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -45,7 +41,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
     );
   }
 
-  /// متد برای ساختن هدر ویجت
+  //! Builds the tile's header.
   Widget _buildHeader() {
     return GestureDetector(
       onTap: () {
@@ -55,10 +51,10 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
       },
       child: Container(
         color: Colors.transparent,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // بخش سمت چپ: تگ "باز است"
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
@@ -84,15 +80,23 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                 ],
               ),
             ),
-            // بخش سمت راست: متن "امروز" و آیکون جهت‌نما
             Row(
               children: [
+                const Text(
+                  'امروز',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(width: 8),
                 Icon(
-                  size: 30,
                   _isExpanded
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
                   color: Colors.grey.shade600,
+                  size: 30,
                 ),
               ],
             ),
@@ -102,27 +106,26 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
     );
   }
 
-  /// متدی برای ساختن محتوای باز شونده با انیمیشن
+  //! Builds the expandable content with animation.
   Widget _buildExpandableContent() {
+    //! Animates the expansion and collapse.
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-      child:
-          _isExpanded
-              ? Column(
-                children: [
-                  const SizedBox(height: 8),
-                  const Divider(),
-                  // فرزندانی که از ورودی ویجت گرفته‌ایم در اینجا نمایش داده می‌شوند
-                  ...widget.children,
-                ],
-              )
-              : const SizedBox.shrink(),
+      child: _isExpanded
+          ? Column(
+              children: [
+                const SizedBox(height: 8),
+                const Divider(),
+                ...widget.children,
+              ],
+            )
+          : const SizedBox.shrink(),
     );
   }
 }
 
-// این ویجت صفحه اصلی شماست که حالا از ویجت سفارشی بالا استفاده می‌کند
+//! Main page displaying details in a TabBarView.
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -131,8 +134,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // متغیر _customTileExpanded دیگر لازم نیست و حذف می‌شود.
-
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -162,23 +163,19 @@ class _ProfilePageState extends State<ProfilePage> {
               indicatorSize: TabBarIndicatorSize.tab,
               dividerColor: Colors.transparent,
               tabs: [
-                Tab(
-                  child: Text('اطلاعات مجموعه', style: TextStyle(fontSize: 14)),
-                ),
-                Tab(
-                  child: Text('نظرات کاربران', style: TextStyle(fontSize: 14)),
-                ),
+                Tab(child: Text('اطلاعات مجموعه', style: TextStyle(fontSize: 14))),
+                Tab(child: Text('نظرات کاربران', style: TextStyle(fontSize: 14))),
               ],
             ),
           ),
           body: TabBarView(
             children: [
+              //! Tab 1: Info Page Content.
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start, // برای تراز کردن عنوان
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'اطلاعات مجموعه',
@@ -188,13 +185,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
                       _buildMapSection(),
                       const SizedBox(height: 16),
                       _buildAddressSection(),
                       const SizedBox(height: 16),
-                      // ### نقطه کلیدی تغییر اینجاست ###
-                      // به جای ExpansionTile قدیمی، از ویجت سفارشی جدید استفاده می‌کنیم
+                      //! Using the custom expansion tile for opening hours.
                       StyledExpansionTile(
                         children: [
                           _buildOpeningHoursRow('شنبه', '۱۱:۳۰ تا ۲۳:۰۰'),
@@ -203,11 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           _buildOpeningHoursRow('سه‌شنبه', '۱۱:۳۰ تا ۲۳:۰۰'),
                           _buildOpeningHoursRow('چهارشنبه', '۱۱:۳۰ تا ۲۳:۰۰'),
                           _buildOpeningHoursRow('پنجشنبه', '۱۱:۳۰ تا ۲۳:۰۰'),
-                          _buildOpeningHoursRow(
-                            'جمعه',
-                            'تعطیل است',
-                            isClosed: true,
-                          ),
+                          _buildOpeningHoursRow('جمعه', 'تعطیل است', isClosed: true),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -215,6 +207,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               ),
+              //! Tab 2: Comments Page Content.
               const Center(
                 child: Text(
                   'بخش نظرات کاربران',
@@ -229,26 +222,26 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-// توابع کمکی شما بدون تغییر زیاد باقی می‌مانند
+//! Helper: Builds the map placeholder.
 Widget _buildMapSection() {
   return Stack(
     children: [
       ClipRRect(
-        // برای گرد کردن گوشه‌های نقشه
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          height: 250, // کمی ارتفاع کمتر برای تناسب بهتر
+          height: 250,
           color: Colors.grey[200],
           child: const Center(
             child: Icon(Icons.map_outlined, color: Colors.grey, size: 80),
           ),
         ),
       ),
-      // ... بقیه کدهای Positioned شما برای دکمه‌های روی نقشه ...
+      // ... Other Positioned widgets for map buttons would go here ...
     ],
   );
 }
 
+//! Helper: Builds the address row.
 Widget _buildAddressSection() {
   return Row(
     children: [
@@ -257,11 +250,7 @@ Widget _buildAddressSection() {
       const Expanded(
         child: Text(
           'بلوار جمهوری سه راه حمزه بلوار...',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
-          ),
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
           textAlign: TextAlign.right,
           overflow: TextOverflow.ellipsis,
         ),
@@ -280,31 +269,30 @@ Widget _buildAddressSection() {
   );
 }
 
+//! Helper: Builds a single opening hours row.
 Widget _buildOpeningHoursRow(String day, String time, {bool isClosed = false}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // بخش زمان
         isClosed
             ? Text(
-              time,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.red.shade700,
-              ),
-            )
+                time,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red.shade700,
+                ),
+              )
             : Text(
-              time,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
+                time,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
               ),
-            ),
-        // بخش روز هفته
         Text(
           day,
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
