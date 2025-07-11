@@ -19,11 +19,18 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text('توضیحات', style: TextStyle(fontSize: 20)),
+            title: const Text(
+              'توضیحات',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             leading: IconButton(
-              icon: const Icon(Icons.chevron_left_rounded, size: 40),
+              icon: const Icon(
+                Icons.chevron_left_rounded,
+                size: 40,
+                color: Color(0xff5F6266),
+              ),
               onPressed: () {
                 if (Navigator.canPop(context)) {
                   Navigator.pop(context);
@@ -32,17 +39,23 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             bottom: const TabBar(
               labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
+              unselectedLabelColor: Colors.black,
               indicatorColor: Colors.blue,
               indicatorWeight: 3,
               indicatorSize: TabBarIndicatorSize.tab,
               dividerColor: Colors.transparent,
               tabs: [
                 Tab(
-                  child: Text('اطلاعات مجموعه', style: TextStyle(fontSize: 14)),
+                  child: Text(
+                    'اطلاعات مجموعه',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
                 ),
                 Tab(
-                  child: Text('نظرات کاربران', style: TextStyle(fontSize: 14)),
+                  child: Text(
+                    'نظرات کاربران',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
                 ),
               ],
             ),
@@ -69,6 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 16),
                       _buildAddressSection(),
                       const SizedBox(height: 16),
+                      Divider(color: Color(0xffE9EBF5), thickness: 1),
                       //! Using the custom expansion tile for opening hours.
                       StyledExpansionTile(
                         children: [
@@ -108,14 +122,11 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildMapSection() {
     return Stack(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            height: 250,
-            color: Colors.grey[200],
-            child: const Center(
-              child: Icon(Icons.map_outlined, color: Colors.grey, size: 80),
-            ),
+        Container(
+          height: 250,
+          color: Colors.grey[200],
+          child: const Center(
+            child: Icon(Icons.map_outlined, color: Colors.grey, size: 80),
           ),
         ),
         // ... Other Positioned widgets for map buttons would go here ...
@@ -127,30 +138,34 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildAddressSection() {
     return Row(
       children: [
-        const Icon(Icons.location_on_outlined, color: Colors.grey, size: 28),
-        const SizedBox(width: 8),
+        const Icon(
+          Icons.location_on_outlined,
+          color: Color(0xff5F6266),
+          size: 28,
+        ),
         const Expanded(
           child: Text(
             'بلوار جمهوری سه راه حمزه بلوار...',
             style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
               color: Colors.black,
             ),
             textAlign: TextAlign.right,
             overflow: TextOverflow.ellipsis,
           ),
         ),
+        SizedBox(width: 30),
         const Text(
           'مسیریابی',
           style: TextStyle(
-            color: Colors.blue,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
+            color: Color(0xff5F6266),
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(width: 4),
-        const Icon(Icons.directions, color: Colors.blue, size: 28),
+        const Icon(Icons.north_west, color: Color(0xff5F6266), size: 28),
       ],
     );
   }
@@ -173,11 +188,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 34,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1),
-                  color: const Color.fromARGB(131, 109, 120, 122),
+                  border: Border.all(width: 1, color: Color(0xffE3E6F3)),
+                  color: const Color(0xfff5f6fb),
                 ),
                 child: Center(
-                  child: Text(time, style: TextStyle(color: Colors.black)),
+                  child: Text(time, style: TextStyle(color: Color(0xff767680))),
                 ),
               ),
             ),
@@ -249,7 +264,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
-                    vertical: 4,
+                    vertical: 2,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.green.shade100.withOpacity(0.7),
@@ -257,18 +272,14 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.access_time,
-                        color: Colors.green.shade800,
-                        size: 16,
-                      ),
+                      Icon(Icons.access_time, color: Colors.black, size: 20),
                       const SizedBox(width: 6),
                       Text(
                         'باز است',
                         style: TextStyle(
-                          color: Colors.green.shade800,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 13,
+                          fontSize: 16,
                         ),
                       ),
                     ],
@@ -278,14 +289,16 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                   _isExpanded
                       ? Icons.keyboard_arrow_up
                       : Icons.keyboard_arrow_down,
-                  color: Colors.grey.shade600,
+                  color: Color(0xff5F6266),
                   size: 30,
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 30),
             Row(
-              children: [Text('امروز', style: TextStyle(color: Colors.black))],
+              children: [
+                Text('امروز', style: TextStyle(color: Color(0xff3A4BA8))),
+              ],
             ),
             SizedBox(height: 8),
             Row(
@@ -295,13 +308,13 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                     height: 34,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1),
-                      color: const Color.fromARGB(131, 109, 120, 122),
+                      border: Border.all(width: 1, color: Color(0xffE3E6F3)),
+                      color: const Color(0xfff5f6fb),
                     ),
                     child: Center(
                       child: Text(
                         '۱۱:۳۰ تا ۲۳:۰۰',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Color(0xff767680)),
                       ),
                     ),
                   ),
