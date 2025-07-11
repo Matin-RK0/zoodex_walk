@@ -156,15 +156,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   //! Helper: Builds a single opening hours row.
-<<<<<<< HEAD
   Widget _buildOpeningHoursRow(
     String day,
     String time, {
     bool isClosed = false,
   }) {
-=======
-  Widget _buildOpeningHoursRow(String day, String time, {bool isClosed = false}) {
->>>>>>> dcbb00038de64c940b08684e5e45f28f4be233fe
     return Column(
       children: [
         SizedBox(height: 12),
@@ -190,7 +186,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
-<<<<<<< HEAD
 }
 
 // ------------------- Custom Widgets -------------------
@@ -331,147 +326,6 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                 children: [const SizedBox(height: 0), ...widget.children],
               )
               : const SizedBox.shrink(),
-    );
-  }
-=======
->>>>>>> dcbb00038de64c940b08684e5e45f28f4be233fe
-}
-
-// ------------------- Custom Widgets -------------------
-
-//! A custom expandable tile with a specific design.
-class StyledExpansionTile extends StatefulWidget {
-  final List<Widget> children;
-  final bool initiallyExpanded;
-
-  const StyledExpansionTile({
-    super.key,
-    required this.children,
-    this.initiallyExpanded = false,
-  });
-
-  @override
-  State<StyledExpansionTile> createState() => _StyledExpansionTileState();
-}
-
-class _StyledExpansionTileState extends State<StyledExpansionTile>
-    with SingleTickerProviderStateMixin {
-  //! Manages the expanded/collapsed state.
-  late bool _isExpanded;
-
-  @override
-  void initState() {
-    super.initState();
-    _isExpanded = widget.initiallyExpanded;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [_buildHeader(), _buildExpandableContent()],
-      ),
-    );
-  }
-
-  //! Builds the tile's header.
-  Widget _buildHeader() {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _isExpanded = !_isExpanded;
-        });
-      },
-      child: Container(
-        color: Colors.transparent, // Makes the whole area tappable
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade100.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.access_time,
-                        color: Colors.green.shade800,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        'باز است',
-                        style: TextStyle(
-                          color: Colors.green.shade800,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Icon(
-                  _isExpanded
-                      ? Icons.keyboard_arrow_up
-                      : Icons.keyboard_arrow_down,
-                  color: Colors.grey.shade600,
-                  size: 30,
-                ),
-              ],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [Text('امروز', style: TextStyle(color: Colors.black))],
-            ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 34,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1),
-                      color: const Color.fromARGB(131, 109, 120, 122),
-                    ),
-                    child: Center(
-                      child: Text('۱۱:۳۰ تا ۲۳:۰۰',
-                          style: TextStyle(color: Colors.black)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  //! Builds the expandable content with animation.
-  Widget _buildExpandableContent() {
-    //! Animates the expansion and collapse.
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 200),
-      curve: Curves.easeOutCirc,
-      child: _isExpanded
-          ? Column(
-              children: [const SizedBox(height: 0), ...widget.children],
-            )
-          : const SizedBox.shrink(),
     );
   }
 }
