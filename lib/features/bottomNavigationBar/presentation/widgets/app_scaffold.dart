@@ -11,7 +11,7 @@ class AppScaffold extends StatelessWidget {
   const AppScaffold({super.key});
 
   static const _pages = <Widget>[
-    ProfilePage(),
+    StoreMenuMorePage(),
     HomePage(),
     MapPage(),
     OrdersPage(),
