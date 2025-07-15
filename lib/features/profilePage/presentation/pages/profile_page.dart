@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
-//! Main page displaying details in a TabBarView.
 class StoreMenuMorePage extends StatefulWidget {
   const StoreMenuMorePage({super.key});
 
@@ -32,18 +32,15 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                 color: Color(0xff5F6266),
               ),
               onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
+                if (Navigator.canPop(context)) Navigator.pop(context);
               },
             ),
             bottom: const TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.black,
-              indicatorColor: Colors.blue,
+              indicatorColor: Color(0xff3a4ba8),
               indicatorWeight: 3,
               indicatorSize: TabBarIndicatorSize.tab,
-              dividerColor: Colors.transparent,
               tabs: [
                 Tab(
                   child: Text(
@@ -62,7 +59,6 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
           ),
           body: TabBarView(
             children: [
-              //! Tab 1: Info Page Content.
               SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -73,62 +69,56 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                         'اطلاعات مجموعه',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 12),
-                      _buildMapSection(),
+                      _buildMapSection(), //! نمایش نقشه
                       const SizedBox(height: 16),
-                      _buildAddressSection(),
-                      const SizedBox(height: 16),
+                      _buildAddressSection(), //! نمایش آدرس و دکمه مسیریابی
+                      const SizedBox(height: 8),
                       const Divider(color: Color(0xffE9EBF5), thickness: 1),
                       const SizedBox(height: 16),
-                      //! Using the custom expansion tile for opening hours.
                       StyledExpansionTile(
-                        headerDay: 'امروز',
-                        headerTime: '۱۱:۳۰ تا ۲۳:۰۰',
+                        todayKey: 'سه‌شنبه', //! تعیین کنید امروز کدام روز است
                         isOpen: true,
-                        children: const [
-                          OpeningHoursRow(day: 'شنبه', time: '۱۱:۳۰ تا ۲۳:۰۰'),
-                          OpeningHoursRow(
-                            day: 'یکشنبه',
-                            time: '۱۱:۳۰ تا ۲۳:۰۰',
-                          ),
-                          OpeningHoursRow(
-                            day: 'دوشنبه',
-                            time: '۱۱:۳۰ تا ۲۳:۰۰',
-                          ),
-                          OpeningHoursRow(
-                            day: 'سه‌شنبه',
-                            time: '۱۱:۳۰ تا ۲۳:۰۰',
-                          ),
-                          OpeningHoursRow(
-                            day: 'چهارشنبه',
-                            time: '۱۱:۳۰ تا ۲۳:۰۰',
-                          ),
-                          OpeningHoursRow(
-                            day: 'پنجشنبه',
-                            time: '۱۱:۳۰ تا ۲۳:۰۰',
-                          ),
-                          OpeningHoursRow(
-                            day: 'جمعه',
-                            time: 'تعطیل است',
-                            isClosed: true,
-                          ),
-                        ],
+                        openingHours: {
+                          'شنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'یکشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'دوشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'سه‌شنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'چهارشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'پنجشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
+                          'جمعه': 'تعطیل است',
+                        },
                       ),
+
                       const SizedBox(height: 24),
                     ],
                   ),
                 ),
               ),
-              //! Tab 2: Comments Page Content.
-              const Center(
-                child: Text(
-                  'بخش نظرات کاربران',
-                  style: TextStyle(fontSize: 18, color: Colors.black),
-                ),
+              Column(
+                children: [
+                  SizedBox(height: 16),
+                  RatingsSummaryCard(
+                    //! خلاصه امتیازات کاربران
+                    averageRating: 4.5,
+                    reviewCount: 120,
+                    ratingPercentages: [0.15, 0.35, 0.80, 0.90, 0.75],
+                  ),
+                  SizedBox(height: 20),
+                  UserReviewCard(
+                    //! نمونه کارت نظر کاربر
+                    userName: 'سلطانی',
+                    rating: 3.5,
+                    date: '۱۴۰۳/۰۳/۰۸',
+                    reviewText:
+                        'به جز کوبیده مرغ که پر از ادویه و سفت بود بقیه خوش طعم و عالی بودن',
+                    tags: ['چلو قالبی ایرانی', 'دیس کباب', 'دنبه'],
+                  ),
+                ],
               ),
             ],
           ),
@@ -137,7 +127,6 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
     );
   }
 
-  //! Helper: Builds the map placeholder.
   Widget _buildMapSection() {
     return Stack(
       children: [
@@ -148,21 +137,20 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
             borderRadius: BorderRadius.circular(12),
           ),
           child: const Center(
-            child: Icon(Icons.map_outlined, color: Colors.grey, size: 80),
+            child: Icon(Icons.map_outlined, size: 80, color: Colors.grey),
           ),
         ),
       ],
     );
   }
 
-  //! Helper: Builds the address row.
   Widget _buildAddressSection() {
     return Row(
       children: [
         const Icon(
           Icons.location_on_outlined,
-          color: Color(0xff5F6266),
           size: 28,
+          color: Color(0xff5F6266),
         ),
         const SizedBox(width: 8),
         const Expanded(
@@ -181,32 +169,30 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
         const Text(
           'مسیریابی',
           style: TextStyle(
-            color: Color(0xff5F6266),
             fontSize: 18,
             fontWeight: FontWeight.w600,
+            color: Color(0xff5F6266),
           ),
         ),
         const SizedBox(width: 4),
-        const Icon(Icons.north_west, color: Color(0xff5F6266), size: 36),
+        const Icon(Icons.north_west, size: 36, color: Color(0xff5F6266)),
       ],
     );
   }
 }
 
-//! A custom expandable tile with a specific design.
 class StyledExpansionTile extends StatefulWidget {
-  final List<Widget> children;
+  /// کل داده‌های روزها و ساعات
+  final Map<String, String> openingHours;
   final bool initiallyExpanded;
-  final String headerDay;
-  final String headerTime;
+  final String todayKey; //! کلید (روز) امروز
   final bool isOpen;
 
   const StyledExpansionTile({
     super.key,
-    required this.children,
+    required this.openingHours,
     this.initiallyExpanded = false,
-    required this.headerDay,
-    required this.headerTime,
+    required this.todayKey,
     required this.isOpen,
   });
 
@@ -233,21 +219,20 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [_buildTappableHeader(), _buildConditionalContent()],
+        children: [
+          _buildHeader(), //! تیتر قابل تپ
+          _buildContent(), //! محتوای قابل انیمیت
+        ],
       ),
     );
   }
 
-  //! Builds the always-visible, tappable part of the header.
-  Widget _buildTappableHeader() {
+  Widget _buildHeader() {
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _isExpanded = !_isExpanded;
-        });
-      },
+      onTap:
+          () => setState(() => _isExpanded = !_isExpanded), //! جا‌به‌جایی حالت
       child: Container(
-        color: Colors.transparent, // Makes the whole area tappable
+        color: Colors.transparent,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -262,14 +247,14 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
               ),
               child: Row(
                 children: [
-                  Icon(Icons.access_time, color: Colors.black, size: 20),
+                  const Icon(Icons.access_time, size: 20),
                   const SizedBox(width: 6),
                   Text(
                     widget.isOpen ? 'باز است' : 'بسته است',
-                    style: TextStyle(
-                      color: Colors.black, // رنگ متن بر اساس وضعیت
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
+                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -279,8 +264,8 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
               _isExpanded
                   ? Icons.keyboard_arrow_up_rounded
                   : Icons.keyboard_arrow_down_rounded,
-              color: const Color(0xff5F6266),
               size: 40,
+              color: const Color(0xff5F6266),
             ),
           ],
         ),
@@ -288,54 +273,33 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
     );
   }
 
-  //! Builds the content that switches between "Today" and the children list.
-  Widget _buildConditionalContent() {
+  Widget _buildContent() {
     return AnimatedSize(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeOut,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 0,
-        ), // No horizontal padding needed here
-        child: Column(
-          children: [
-            // اگر بسته است، فقط اطلاعات امروز را با رنگ آبی نشان بده
-            if (!_isExpanded)
-              OpeningHoursRow(
-                day: widget.headerDay,
-                time: widget.headerTime,
-                dayColor: Color(0xff3A4BA8), // <--- تغییر کلیدی اینجاست
-              ),
-
-            // اگر باز است، فقط لیست فرزندان را نشان بده
-            if (_isExpanded) Column(children: [...widget.children]),
-
-            // اگر بسته است، فاصله‌ای در پایین ایجاد نکن
-            if (_isExpanded) const SizedBox(height: 16),
-          ],
-        ),
+      child: Column(
+        children: [
+          // وقتی جمع‌وجور است فقط ردیف امروز با رنگ متفاوت
+          if (!_isExpanded)
+            _buildRow(
+              widget.todayKey,
+              widget.openingHours[widget.todayKey]!,
+              highlight: true,
+            ),
+          // وقتی باز است، همه روزها را لیست کن
+          if (_isExpanded)
+            ...widget.openingHours.entries.map((e) {
+              final isToday = e.key == widget.todayKey;
+              return _buildRow(e.key, e.value, highlight: isToday);
+            }).toList(),
+          if (_isExpanded) const SizedBox(height: 16),
+        ],
       ),
     );
   }
-}
 
-//! A reusable widget to display a single row of opening hours.
-class OpeningHoursRow extends StatelessWidget {
-  final String day;
-  final String time;
-  final bool isClosed;
-  final Color? dayColor; // پارامتر جدید برای رنگ روز
-
-  const OpeningHoursRow({
-    super.key,
-    required this.day,
-    required this.time,
-    this.isClosed = false,
-    this.dayColor, // اضافه شدن به سازنده
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  /// یک ردیف ساعت کاری می‌سازد و در صورت highlight=true رنگ‌بندی متفاوت می‌دهد
+  Widget _buildRow(String day, String time, {bool highlight = false}) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
       child: Column(
@@ -344,44 +308,300 @@ class OpeningHoursRow extends StatelessWidget {
           Text(
             day,
             style: TextStyle(
-              // اگر رنگی پاس داده شده بود از آن استفاده کن، در غیر این صورت از رنگ پیش‌فرض
-              color: dayColor ?? Colors.black,
+              color:
+                  highlight
+                      ? Color(0xff3a4ba8)
+                      : Colors.black, //! رنگ روز
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 8),
-          isClosed
-              ? Center(
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red.shade700,
-                  ),
+          Container(
+            height: 34,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                width: 1,
+                color: Color(0xffE3E6F3),
+              ),
+              color:
+                  highlight
+                      ? const Color(0xffF5F6FB) //! رنگ پس‌زمینه متفاوت
+                      :  Colors.white,
+            ),
+            child: Center(
+              child: Text(
+                time,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff767680), //! رنگ متن متفاوت
                 ),
-              )
-              : Container(
-                height: 34,
-                width: double.infinity,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RatingsSummaryCard extends StatelessWidget {
+  final double averageRating;
+  final int reviewCount;
+  final List<double> ratingPercentages;
+
+  const RatingsSummaryCard({
+    super.key,
+    required this.averageRating,
+    required this.reviewCount,
+    required this.ratingPercentages,
+  }) : assert(ratingPercentages.length == 5);
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xffe3e6f3)),
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(flex: 2, child: _buildSummary()), //! بخش خلاصه امتیاز
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 3,
+                  child: _buildBars(),
+                ), //! نوارهای درصد امتیازات
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSummary() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        SizedBox(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text(
+              '/5',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey.shade600,
+                fontWeight: FontWeight.w700,
+              ),
+              textDirection: TextDirection.ltr,
+            ),
+            Text(
+              ' $averageRating',
+              style: const TextStyle(
+                fontSize: 24,
+                color: Color(0xFF3a4ba8),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Text(
+          '$reviewCount نظر طبق عملکرد سه ماهه اخیر مجموعه',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.5,
+            color: Colors.grey.shade700,
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildStars(averageRating), //! نمایش ستاره‌ها
+        SizedBox(height: 26),
+      ],
+    );
+  }
+
+  Widget _buildBars() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: List.generate(5, (i) {
+        int star = i + 1;
+        return Row(
+          children: [
+            Text(
+              '.$star',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade700,
+              ),
+              textDirection: TextDirection.ltr,
+            ),
+            const SizedBox(width: 6),
+            const Icon(Icons.star, size: 20, color: Colors.amber),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1, color: const Color(0xffE3E6F3)),
-                  color: const Color(0xfff5f6fb),
+                  border: Border.all(
+                    color: const Color(0xFFe8e9e9),
+                    width: 1.5,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                  child: Text(
-                    time,
-                    style: const TextStyle(
-                      color: Color(0xff767680),
-                      fontWeight: FontWeight.w600,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: LinearProgressIndicator(
+                    value: ratingPercentages[i],
+                    minHeight: 8,
+                    backgroundColor: Colors.white,
+                    valueColor: const AlwaysStoppedAnimation(Color(0xFF3a4ba8)),
                   ),
                 ),
               ),
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildStars(double rating) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (i) {
+        IconData icon;
+        if (rating >= i + 1)
+          icon = Icons.star;
+        else if (rating > i)
+          icon = Icons.star_half;
+        else
+          icon = Icons.star_border;
+        return Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.rotationY(math.pi),
+          child: Icon(icon, size: 24, color: Colors.amber),
+        );
+      }),
+    );
+  }
+}
+
+class UserReviewCard extends StatelessWidget {
+  final String userName;
+  final double rating;
+  final String date;
+  final String reviewText;
+  final List<String> tags;
+
+  const UserReviewCard({
+    super.key,
+    required this.userName,
+    required this.rating,
+    required this.date,
+    required this.reviewText,
+    required this.tags,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(), //! هدر کارت نظر
+          const SizedBox(height: 16),
+          Text(
+            reviewText,
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+          ), //! متن نظر
+          const SizedBox(height: 16),
+          _buildTags(), //! چیدمان تگ‌ها
         ],
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(2, 2, 6, 2),
+              decoration: BoxDecoration(
+                color: const Color(0xffeff1f8),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    rating.toString(),
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(Icons.star_rounded, size: 24, color: Colors.amber),
+                ],
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              userName,
+              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Text(
+          date,
+          style: const TextStyle(fontSize: 17, color: Color(0xff767680)),
+        ), //! تاریخ نظر
+      ],
+    );
+  }
+
+  Widget _buildTags() {
+    return Wrap(
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children:
+          tags.map((label) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xffE3E6F3)),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xff767680),
+                ),
+              ),
+            );
+          }).toList(),
     );
   }
 }
