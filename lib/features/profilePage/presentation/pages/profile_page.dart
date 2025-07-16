@@ -74,14 +74,14 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      _buildMapSection(), //! نمایش نقشه
+                      _buildMapSection(), //! Display map
                       const SizedBox(height: 16),
-                      _buildAddressSection(), //! نمایش آدرس و دکمه مسیریابی
+                      _buildAddressSection(), //! Display address and navigation button
                       const SizedBox(height: 8),
                       const Divider(color: Color(0xffE9EBF5), thickness: 1),
                       const SizedBox(height: 16),
                       StyledExpansionTile(
-                        todayKey: 'سه‌شنبه', //! تعیین کنید امروز کدام روز است
+                        todayKey: 'سه‌شنبه', //! Specify which day is today
                         isOpen: true,
                         openingHours: {
                           'شنبه': '۱۱:۳۰ تا ۲۳:۰۰',
@@ -103,14 +103,14 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                 children: [
                   SizedBox(height: 16),
                   RatingsSummaryCard(
-                    //! خلاصه امتیازات کاربران
+                    //! User rating summary
                     averageRating: 4.5,
                     reviewCount: 120,
                     ratingPercentages: [0.15, 0.35, 0.80, 0.90, 0.75],
                   ),
                   SizedBox(height: 20),
                   UserReviewCard(
-                    //! نمونه کارت نظر کاربر
+                    //! Example user review card
                     userName: 'سلطانی',
                     rating: 3.5,
                     date: '۱۴۰۳/۰۳/۰۸',
@@ -182,10 +182,10 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
 }
 
 class StyledExpansionTile extends StatefulWidget {
-  /// کل داده‌های روزها و ساعات
+  /// All opening hours data
   final Map<String, String> openingHours;
   final bool initiallyExpanded;
-  final String todayKey; //! کلید (روز) امروز
+  final String todayKey; //! Key for today's day
   final bool isOpen;
 
   const StyledExpansionTile({
@@ -220,8 +220,8 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildHeader(), //! تیتر قابل تپ
-          _buildContent(), //! محتوای قابل انیمیت
+          _buildHeader(), //! Tappable header
+          _buildContent(), //! Expandable animated content
         ],
       ),
     );
@@ -229,8 +229,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
 
   Widget _buildHeader() {
     return GestureDetector(
-      onTap:
-          () => setState(() => _isExpanded = !_isExpanded), //! جا‌به‌جایی حالت
+      onTap: () => setState(() => _isExpanded = !_isExpanded), //! Toggle state
       child: Container(
         color: Colors.transparent,
         child: Row(
@@ -279,14 +278,14 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
       curve: Curves.easeOut,
       child: Column(
         children: [
-          // وقتی جمع‌وجور است فقط ردیف امروز با رنگ متفاوت
+          // When collapsed, show only today's row with highlight
           if (!_isExpanded)
             _buildRow(
               widget.todayKey,
               widget.openingHours[widget.todayKey]!,
               highlight: true,
             ),
-          // وقتی باز است، همه روزها را لیست کن
+          // When expanded, show all days
           if (_isExpanded)
             ...widget.openingHours.entries.map((e) {
               final isToday = e.key == widget.todayKey;
@@ -298,7 +297,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
     );
   }
 
-  /// یک ردیف ساعت کاری می‌سازد و در صورت highlight=true رنگ‌بندی متفاوت می‌دهد
+  /// Builds a single row with working hours, highlighted if [highlight] is true
   Widget _buildRow(String day, String time, {bool highlight = false}) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0),
@@ -311,7 +310,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
               color:
                   highlight
                       ? Color(0xff3a4ba8)
-                      : Colors.black, //! رنگ روز
+                      : Colors.black, //! Day text color
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -322,14 +321,11 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                width: 1,
-                color: Color(0xffE3E6F3),
-              ),
+              border: Border.all(width: 1, color: Color(0xffE3E6F3)),
               color:
                   highlight
-                      ? const Color(0xffF5F6FB) //! رنگ پس‌زمینه متفاوت
-                      :  Colors.white,
+                      ? const Color(0xffF5F6FB) //! Different background color
+                      : Colors.white,
             ),
             child: Center(
               child: Text(
@@ -337,7 +333,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xff767680), //! رنگ متن متفاوت
+                  color: Color(0xff767680), //! Different text color
                 ),
               ),
             ),
@@ -376,12 +372,15 @@ class RatingsSummaryCard extends StatelessWidget {
           child: IntrinsicHeight(
             child: Row(
               children: [
-                Expanded(flex: 2, child: _buildSummary()), //! بخش خلاصه امتیاز
+                Expanded(
+                  flex: 2,
+                  child: _buildSummary(),
+                ), //! Rating summary section
                 const SizedBox(width: 16),
                 Expanded(
                   flex: 3,
                   child: _buildBars(),
-                ), //! نوارهای درصد امتیازات
+                ), //! Rating percentage bars
               ],
             ),
           ),
@@ -430,7 +429,7 @@ class RatingsSummaryCard extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        _buildStars(averageRating), //! نمایش ستاره‌ها
+        _buildStars(averageRating), //! Star rating display
         SizedBox(height: 26),
       ],
     );
@@ -483,6 +482,7 @@ class RatingsSummaryCard extends StatelessWidget {
 
   Widget _buildStars(double rating) {
     return Row(
+      textDirection: TextDirection.ltr,
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (i) {
         IconData icon;
@@ -525,14 +525,14 @@ class UserReviewCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(), //! هدر کارت نظر
+          _buildHeader(), //! Review card header
           const SizedBox(height: 16),
           Text(
             reviewText,
             style: const TextStyle(fontSize: 16, color: Colors.black),
-          ), //! متن نظر
+          ), //! Review text
           const SizedBox(height: 16),
-          _buildTags(), //! چیدمان تگ‌ها
+          _buildTags(), //! Tag layout
         ],
       ),
     );
@@ -575,7 +575,7 @@ class UserReviewCard extends StatelessWidget {
         Text(
           date,
           style: const TextStyle(fontSize: 17, color: Color(0xff767680)),
-        ), //! تاریخ نظر
+        ), //! Review date
       ],
     );
   }
