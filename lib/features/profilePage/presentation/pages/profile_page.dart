@@ -65,13 +65,21 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'اطلاعات مجموعه',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              'اطلاعات مجموعه',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 12),
                       _buildMapSection(), //! Display map
@@ -153,7 +161,7 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
           color: Color(0xff5F6266),
         ),
         const SizedBox(width: 8),
-        const Expanded(
+        Expanded(
           child: Text(
             'بلوار جمهوری سه راه حمزه بلوار...',
             style: TextStyle(
