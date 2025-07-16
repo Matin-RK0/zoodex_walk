@@ -118,3 +118,117 @@ class CustomGradientCardWithCircles extends StatelessWidget {
     );
   }
 }
+
+class AddressCard extends StatelessWidget {
+  const AddressCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: Color(0xfff8f9fa),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // ارتفاع کارت متناسب با محتوا باشد
+            crossAxisAlignment:
+                CrossAxisAlignment.start, // همه چیز از راست شروع شود
+            children: [
+              // ----- ردیف اول: عنوان و آیکون ها -----
+              Row(
+                children: [
+                  // عنوان شرکت
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontFamily: 'Vazirmatn', // یک فونت فارسی خوب
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
+                      children: [
+                        const TextSpan(
+                          text: 'شرکت ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text: '(کرمان)',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Color(0xff767680),
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Spacer(),
+
+                  GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.edit,
+                      size: 20,
+                      color: Color(0xff767680),
+                    ),
+                  ),
+                  SizedBox(width: 14,),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.delete_outline,
+                      size: 20,
+                      color: Color(0xff767680),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // ----- ردیف دوم: متن آدرس -----
+              Row(
+                children: [
+                  Text(
+                    'میدان قرنی، ساختمان پدر، طبقه ۵، واحد ۵۰۱ شرکت زودکس',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                      height: 1.5, // فاصله خطوط برای خوانایی بهتر
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16), // فاصله بین ردیف ها
+              // ----- ردیف سوم: اطلاعات تماس -----
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // نام شخص
+                  Text(
+                    'فریبا قطبی تیم فنی',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff767680),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  // شماره تلفن
+                  Text(
+                    '۰۹۳۸۳۸۸۲۸۳۲',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xff767680),
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

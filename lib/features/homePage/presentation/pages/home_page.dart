@@ -56,6 +56,8 @@ class _HomePageState extends State<HomePage> {
                 subtitle: 'مدت زمان باقی‌مانده: 23 روز',
                 onBackPressed: () {},
               ),
+              SizedBox(height: 16),
+              AddressCard(),
             ],
           ),
         ),
