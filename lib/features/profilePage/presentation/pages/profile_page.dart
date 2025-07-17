@@ -9,6 +9,25 @@ class StoreMenuMorePage extends StatefulWidget {
 }
 
 class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
+  final ScrollController _scrollController = ScrollController();
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToBottom() {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -60,6 +79,7 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
           body: TabBarView(
             children: [
               SingleChildScrollView(
+                controller: _scrollController,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -99,6 +119,12 @@ class _StoreMenuMorePageState extends State<StoreMenuMorePage> {
                           'چهارشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
                           'پنجشنبه': '۱۱:۳۰ تا ۲۳:۰۰',
                           'جمعه': 'تعطیل است',
+                        },
+                        onExpansionChanged: (isExpanded) {
+                          if (isExpanded) {
+                            // اگر ویجت باز شد، به پایین اسکرول کن
+                            _scrollToBottom();
+                          }
                         },
                       ),
 
@@ -195,6 +221,7 @@ class StyledExpansionTile extends StatefulWidget {
   final bool initiallyExpanded;
   final String todayKey; //! Key for today's day
   final bool isOpen;
+  final Function(bool isExpanded)? onExpansionChanged;
 
   const StyledExpansionTile({
     super.key,
@@ -202,6 +229,7 @@ class StyledExpansionTile extends StatefulWidget {
     this.initiallyExpanded = false,
     required this.todayKey,
     required this.isOpen,
+    this.onExpansionChanged,
   });
 
   @override
@@ -216,6 +244,13 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
   void initState() {
     super.initState();
     _isExpanded = widget.initiallyExpanded;
+  }
+
+  void _toggleExpansion() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+    widget.onExpansionChanged?.call(_isExpanded);
   }
 
   @override
@@ -237,7 +272,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
 
   Widget _buildHeader() {
     return GestureDetector(
-      onTap: () => setState(() => _isExpanded = !_isExpanded), //! Toggle state
+      onTap: _toggleExpansion, //! Toggle state
       child: Container(
         color: Colors.transparent,
         child: Row(
