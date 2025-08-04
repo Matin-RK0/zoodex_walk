@@ -24,7 +24,7 @@ class _OrdersPageState extends State<OrdersPage> {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             leading: GestureDetector(
-              child: Icon(
+              child: const Icon(
                 Icons.chevron_left_rounded,
                 size: 40,
                 color: Color(0xff5F6266),
@@ -38,9 +38,9 @@ class _OrdersPageState extends State<OrdersPage> {
               child: Divider(
                 height: 1.0,
                 thickness: 2.0,
-                color: Color(0xffefeef0),
+                color: const Color(0xffefeef0),
                 indent: 16,
-                endIndent: 16, // می‌توانید رنگ را تغییر دهید
+                endIndent: 16,
               ),
             ),
           ),
@@ -53,13 +53,13 @@ class _OrdersPageState extends State<OrdersPage> {
                   Container(
                     padding: const EdgeInsets.all(32.0),
                     decoration: BoxDecoration(
-                      color: Color(0xfff6f6f6),
+                      color: const Color(0xfff6f6f6),
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 10,
-                          offset: Offset(0, 4), // تغییر موقعیت سایه
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
@@ -69,27 +69,27 @@ class _OrdersPageState extends State<OrdersPage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Color(0xffffeed7),
+                              color: const Color(0xffffeed7),
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 1, 8, 1),
+                            child: const Padding(
+                              padding: EdgeInsets.fromLTRB(8, 1, 8, 1),
                               child: Text(
                                 'شش ماه',
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
                           ),
-                          SizedBox(height: 32),
-                          Text(
+                          const SizedBox(height: 32),
+                          const Text(
                             'مدت زمان باقی مانده:',
                             style: TextStyle(
                               color: Color(0xff46464f),
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(height: 32),
-                          Row(
+                          const SizedBox(height: 32),
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -119,8 +119,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'سود شما',
                     style: TextStyle(
                       color: Colors.black,
@@ -128,8 +128,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  ProfitCard(
+                  const SizedBox(height: 16),
+                  const ProfitCard(
                     price: '240,000 تومان',
                     title: 'ارسال رایگان',
                     icon: Icon(
@@ -138,8 +138,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       size: 24,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  ProfitCard(
+                  const SizedBox(height: 16),
+                  const ProfitCard(
                     price: '37,000 تومان',
                     title: 'تخفیف مجموعه‌ها',
                     icon: Icon(
@@ -148,8 +148,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       size: 24,
                     ),
                   ),
-                  SizedBox(height: 16),
-                  ProfitCard(
+                  const SizedBox(height: 16),
+                  const ProfitCard(
                     price: '60,000 تومان',
                     title: 'کش بک',
                     icon: Icon(
@@ -158,7 +158,8 @@ class _OrdersPageState extends State<OrdersPage> {
                       size: 24,
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
+                  //! Navigate to the subscription history page on tap.
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -173,9 +174,9 @@ class _OrdersPageState extends State<OrdersPage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Color(0xfff1f0f2), width: 1),
+                        border: Border.all(color: const Color(0xfff1f0f2), width: 1),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Text(
                             'تاریخچه اشتراک‌های شما',
@@ -205,6 +206,7 @@ class _OrdersPageState extends State<OrdersPage> {
   }
 }
 
+//! A reusable card widget to display different types of profit.
 class ProfitCard extends StatelessWidget {
   final String price;
   final Widget icon;
@@ -223,7 +225,7 @@ class ProfitCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Color(0xfff1f0f2), width: 1),
+        border: Border.all(color: const Color(0xfff1f0f2), width: 1),
       ),
       child: Column(
         children: [
@@ -231,25 +233,25 @@ class ProfitCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(24.0),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
                   color: Color(0xffeff1f8),
                 ),
                 child: icon,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                   fontSize: 14,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Text(
                 price,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xff767880),
                   fontSize: 14,
@@ -263,8 +265,37 @@ class ProfitCard extends StatelessWidget {
   }
 }
 
-class PlusHistory extends StatelessWidget {
+class PlusHistory extends StatefulWidget {
   const PlusHistory({super.key});
+
+  @override
+  State<PlusHistory> createState() => _PlusHistoryState();
+}
+
+class _PlusHistoryState extends State<PlusHistory> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    //! Always dispose of the controller to prevent memory leaks.
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  //! This function programmatically scrolls the content to the top.
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,6 +303,7 @@ class PlusHistory extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.white,
           centerTitle: true,
           title: const Text(
             'تاریخچه',
@@ -280,7 +312,7 @@ class PlusHistory extends StatelessWidget {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           leading: GestureDetector(
-            child: Icon(
+            child: const Icon(
               Icons.chevron_left_rounded,
               size: 40,
               color: Color(0xff5F6266),
@@ -294,61 +326,43 @@ class PlusHistory extends StatelessWidget {
             child: Divider(
               height: 1.0,
               thickness: 2.0,
-              color: Color(0xffefeef0),
+              color: const Color(0xffefeef0),
               indent: 16,
-              endIndent: 16, // می‌توانید رنگ را تغییر دهید
+              endIndent: 16,
             ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Color(0xfff1f0f2), width: 1),
+        body: SingleChildScrollView(
+          //! The ScrollController is attached to the parent scrollable widget.
+          controller: _scrollController,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                ListView.builder(
+                  //! --- Important settings for nested ListView ---
+                  //! 1. shrinkWrap allows the ListView to size itself to its content.
+                  shrinkWrap: true,
+                  //! 2. This physics prevents the ListView from being scrollable itself,
+                  //!    avoiding conflicts with the parent SingleChildScrollView.
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return const PlusHistoryCard();
+                  },
                 ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'شش ماه',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(width: 6),
-                        Container(
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            'فعال',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20,),
-                    HistoryInfoRow(title: 'تاریخ شروع:',value: '1404/03/12'),
-                    SizedBox(height: 14,),
-                    HistoryInfoRow(title: 'پایان اعتبار:',value: '1404/09/08'),
-                    SizedBox(height: 14,),
-                    HistoryInfoRow(title: 'هزینه اعتبار:',value: '59,000 تومان'),
-                    SizedBox(height: 20,),
-                    HistoryInfoRow(title: 'وضعیت پرداخت:',value: 'تایید شده'),
-                  ],
+                const SizedBox(height: 16),
+                //! This button triggers the scroll-to-top action.
+                IconButton(
+                  onPressed: _scrollToTop,
+                  icon: const Icon(
+                    Icons.arrow_upward_rounded,
+                    size: 36,
+                    color: Color(0xff767880),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -356,25 +370,84 @@ class PlusHistory extends StatelessWidget {
   }
 }
 
+//! A card to display a single item in the subscription history.
+class PlusHistoryCard extends StatelessWidget {
+  const PlusHistoryCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xfff1f0f2), width: 1),
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Text(
+                  'شش ماه',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    'فعال',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            const HistoryInfoRow(title: 'تاریخ شروع:', value: '1404/03/12'),
+            const SizedBox(height: 14),
+            const HistoryInfoRow(title: 'پایان اعتبار:', value: '1404/09/08'),
+            const SizedBox(height: 14),
+            const HistoryInfoRow(title: 'هزینه اعتبار:', value: '59,000 تومان'),
+            const SizedBox(height: 20),
+            const HistoryInfoRow(title: 'وضعیت پرداخت:', value: 'تایید شده'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//! A reusable row for displaying key-value information with conditional text color.
 class HistoryInfoRow extends StatelessWidget {
   final String title;
   final String value;
-  const HistoryInfoRow({
-    super.key, required this.value, required this.title,
-  });
+  const HistoryInfoRow({super.key, required this.value, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: TextStyle(color: Color(0xff767680), fontSize: 14),
-        ),
-        Spacer(),
+        Text(title, style: const TextStyle(color: Color(0xff767680), fontSize: 14)),
+        const Spacer(),
         Text(
           value,
-          style: TextStyle(color: Colors.black, fontSize: 14),
+          style: TextStyle(
+            //! Dynamically change color based on the payment status text.
+            color:
+                value == 'تایید شده'
+                    ? Colors.green
+                    : (value == 'لغو شده' ? Colors.red : Colors.black),
+            fontSize: 14,
+          ),
         ),
       ],
     );
