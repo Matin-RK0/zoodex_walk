@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                    MaterialPageRoute(builder: (context) => CurvedCarousel()),
                   );
                 },
                 child: CustomGradientCardWithCircles(
