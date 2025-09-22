@@ -4,6 +4,7 @@ import 'package:zoodex_walk/features/homePage/presentation/providers/banner_prov
 import 'package:zoodex_walk/features/homePage/presentation/widgets/banner_slider.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/custom_app_bar.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/search_box.dart';
+import 'package:zoodex_walk/features/homePage/presentation/widgets/slider.dart';
 import 'package:zoodex_walk/shared/widgets/test.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,10 +52,18 @@ class _HomePageState extends State<HomePage> {
               else
                 BannerSlider(items: vm.banners),
               SizedBox(height: 16),
-              CustomGradientCardWithCircles(
-                title: 'زودکس پلاس',
-                subtitle: 'مدت زمان باقی‌مانده: 23 روز',
-                onBackPressed: () {},
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                  );
+                },
+                child: CustomGradientCardWithCircles(
+                  title: 'زودکس پلاس',
+                  subtitle: 'مدت زمان باقی‌مانده: 23 روز',
+                  onBackPressed: () {},
+                ),
               ),
               SizedBox(height: 16),
               AddressCard(),
