@@ -125,8 +125,8 @@ class _CurvedCarouselState extends State<CurvedCarousel> {
                                       begin: Alignment.topLeft,
                                       end: Alignment.bottomRight,
                                       colors: [
-                                        Color(0xffFEF1C7), // رنگ شروع
-                                        Color(0xffFFFFF8), // رنگ پایان
+                                        Color(0xffFEF1C7), 
+                                        Color(0xffFFFFF8), 
                                       ],
                                     ),
                                     boxShadow: const [
@@ -163,7 +163,6 @@ class _CurvedCarouselState extends State<CurvedCarousel> {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                // اکشن دکمه
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff3a4ba8),

@@ -67,6 +67,15 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16),
               AddressCard(),
+              GestureDetector(
+                onTap: () {
+                  MaterialPageRoute(builder: (context) => CurvedCarousel());
+                },
+                child: SizedBox(
+                  height: 100,
+                  child: Center(child: Text('خخخخخخخخخ',style: TextStyle(fontSize: 24),)),
+                ),
+              ),
             ],
           ),
         ),
