@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zoodex_walk/features/homePage/presentation/providers/banner_provider.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/banner_slider.dart';
+import 'package:zoodex_walk/features/homePage/presentation/widgets/card.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/custom_app_bar.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/search_box.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/slider.dart';
@@ -67,13 +68,21 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16),
               AddressCard(),
-              GestureDetector(
+              InkWell(
                 onTap: () {
-                  MaterialPageRoute(builder: (context) => CurvedCarousel());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SwipeFlipCardExample()),
+                  );
                 },
                 child: SizedBox(
                   height: 100,
-                  child: Center(child: Text('خخخخخخخخخ',style: TextStyle(fontSize: 24),)),
+                  child: Center(
+                    child: Text(
+                      'خخخخخخخخخ',
+                      style: TextStyle(fontSize: 24, color: Colors.black),
+                    ),
+                  ),
                 ),
               ),
             ],
