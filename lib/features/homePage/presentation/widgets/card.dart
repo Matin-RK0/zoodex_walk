@@ -11,23 +11,20 @@ class SwipeFlipCardExample extends StatefulWidget {
 
 class _SwipeFlipCardExampleState extends State<SwipeFlipCardExample>
     with SingleTickerProviderStateMixin {
-      
   late AnimationController _animationController;
   late Animation<double> _animation;
   double _dragPosition = 0;
-  
-  // متغیری برای ذخیره آخرین موقعیت کامل (0.0, 1.0, 2.0, ...)
-  double _baseRotation = 0; 
-  
-  // تعریف _maxRotation به صورت نهایی (final) در سطح کلاس
-  final double _maxRotation = 0.8; 
+
+  double _baseRotation = 0;
+
+  final double _maxRotation = 0.8;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 600),
     );
 
     _animation = Tween<double>(begin: 0, end: 0).animate(
@@ -44,10 +41,8 @@ class _SwipeFlipCardExampleState extends State<SwipeFlipCardExample>
     _animationController.dispose();
     super.dispose();
   }
-  
-  // **تابع کمکی جدید برای اجرای انیمیشن**
+
   void _animateTo(double endValue) {
-    // از موقعیت فعلی به endValue انیمیشن اجرا شود
     _animation = Tween<double>(begin: _dragPosition, end: endValue).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     )..addListener(() {
@@ -55,70 +50,50 @@ class _SwipeFlipCardExampleState extends State<SwipeFlipCardExample>
         _dragPosition = _animation.value;
       });
     });
-      
+
     _animationController.forward(from: 0);
-    
+
     _baseRotation = endValue;
   }
-  
+
   void _toggleCard() {
-    // 1. انیمیشن در حال اجرا را متوقف کنید
     _animationController.stop();
-    
-    // 2. موقعیت کامل فعلی (0.0, 1.0, 2.0, ...) را پیدا کنید
+
     double currentBase = _dragPosition.round().toDouble();
-    
-    // 3. اگر انیمیشن در حال حاضر در حالت Front (مثل 0.0, 2.0) بود، 
-    // به حالت Back (1.0, 3.0) یا برعکس بروید.
-    // به عبارت دیگر، مقدار کامل بعدی را پیدا کنید
     double nextValue;
-    
-    // اگر کارت تقریباً در نمای جلوی یک طرف است، به طرف دیگر بچرخانید
+
     if ((_dragPosition - currentBase).abs() < 0.01) {
-      // برو به عدد صحیح بعدی در جهت چرخش پیش‌فرض (مثلاً +1)
       nextValue = currentBase + 1.0;
     } else {
-      // اگر در میانه بود یا نزدیک به حالت قبلی، به نزدیکترین حالت کامل برگردید.
-      // این بخش برای جلوگیری از پرش‌های غیرمنتظره در حین کشیدن است
       nextValue = currentBase;
     }
-    
+
     _animateTo(nextValue);
   }
 
   void _onPanStart(DragStartDetails details) {
     _animationController.stop();
-    
-    // اصلاح کلیدی ۱: تعیین موقعیت کامل شروع
-    // مقدار فعلی را به نزدیک‌ترین عدد صحیح گرد می‌کنیم. (مثلاً 1.0)
+
     _baseRotation = _dragPosition.round().toDouble();
-    
-    // _dragPosition را از موقعیت فعلی انیمیشن شروع می‌کنیم تا پرشی رخ ندهد.
     _dragPosition = _animation.value;
   }
-
+  
   void _onPanUpdate(DragUpdateDetails details) {
     setState(() {
-      // 1. محاسبه موقعیت جدید (با فرض چرخش معکوس: -=)
-      _dragPosition -= details.delta.dx / 200;
-      
-      // 2. اصلاح کلیدی ۲: اعمال محدودیت (Clamp) بر اساس _baseRotation
-      // _dragPosition فقط در محدوده [Base - 0.7, Base + 0.7] مجاز به حرکت است.
+      _dragPosition -= details.delta.dx / 320;
+
       _dragPosition = _dragPosition.clamp(
-        _baseRotation - _maxRotation, 
+        _baseRotation - _maxRotation,
         _baseRotation + _maxRotation,
       );
     });
   }
 
   void _onPanEnd(DragEndDetails details) {
-    // محاسبه مقدار نهایی که باید به آن چرخید (نزدیک‌ترین عدد صحیح)
     double endValue;
     if ((_dragPosition - _baseRotation).abs() >= 0.5) {
-      // برو به عدد صحیح بعدی در جهت حرکت
       endValue = _baseRotation + (_dragPosition - _baseRotation).sign;
     } else {
-      // برگرد به عدد صحیح فعلی
       endValue = _baseRotation;
     }
 
@@ -129,26 +104,64 @@ class _SwipeFlipCardExampleState extends State<SwipeFlipCardExample>
   Widget build(BuildContext context) {
     final angle = _dragPosition * pi;
     final normalizedAngle = angle.abs() % (2 * pi);
-    final isFrontSide = normalizedAngle <= pi / 2 || normalizedAngle >= 3 * pi / 2;
+    final isFrontSide =
+        normalizedAngle <= pi / 2 || normalizedAngle >= 3 * pi / 2;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Limited Interactive Flip Card"),
-        backgroundColor: Colors.black87,
-      ),
-      backgroundColor: Colors.grey[900],
-      body: Center(
-        child: GestureDetector(
-          onTap: _toggleCard, // **👈 تغییر اصلی ۱: اضافه کردن on Tap**
-          onPanStart: _onPanStart,
-          onPanUpdate: _onPanUpdate,
-          onPanEnd: _onPanEnd,
-          child: Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.001)
-              ..rotateY(angle),
-            child: _buildCard(isFrontSide),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          surfaceTintColor: Colors.white,
+          centerTitle: true,
+          title: const Text(
+            'پیش نمایش',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          ),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          leading: GestureDetector(
+            child: const Icon(
+              Icons.chevron_left_rounded,
+              size: 40,
+              color: Color(0xff5F6266),
+            ),
+            onTap: () {
+              if (Navigator.canPop(context)) Navigator.pop(context);
+            },
+          ),
+        ),
+        body: Center(
+          child: GestureDetector(
+            onTap: _toggleCard,
+            onPanStart: _onPanStart,
+            onPanUpdate: _onPanUpdate,
+            onPanEnd: _onPanEnd,
+            child: Transform(
+              alignment: Alignment.center,
+              transform:
+                  Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateY(angle),
+              child: _buildCard(isFrontSide),
+            ),
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xff3a4ba8),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text("ویرایش", style: TextStyle(fontSize: 18)),
+            ),
           ),
         ),
       ),
@@ -157,32 +170,34 @@ class _SwipeFlipCardExampleState extends State<SwipeFlipCardExample>
 
   Widget _buildCard(bool isFront) {
     return Container(
-      width: 250,
-      height: 400,
+       margin: const EdgeInsets.symmetric(horizontal: 70, vertical: 140),
       decoration: BoxDecoration(
-        color: isFront ? Colors.deepPurple : Colors.orange,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.5),
-            blurRadius: 12,
-            offset: Offset(0, 6),
-          ),
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xffFEF1C7), Color(0xffFFFFF8)],
+        ),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 5, offset: Offset(0, 1)),
         ],
       ),
       child: Transform(
         alignment: Alignment.center,
-        // این Transform باعث می‌شود متن روی کارت پشت، برعکس دیده نشود
-        transform: Matrix4.identity()..rotateY(isFront ? 0 : pi), 
+        transform: Matrix4.identity()..rotateY(isFront ? 0 : pi),
         child: Center(
-          child: Text(
-            isFront ? "Front Side" : "Back Side",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+          child: isFront ? Padding(
+            padding: const EdgeInsets.all(40),
+            child: Image.asset(    
+              'assets/10.png',
+              fit: BoxFit.cover,
             ),
-          ),
+          ) : Text('تولدت مبارک فلانی',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 26,
+            ),
+          )
         ),
       ),
     );
