@@ -6,6 +6,7 @@ import 'package:zoodex_walk/features/homePage/presentation/widgets/card.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/custom_app_bar.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/search_box.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/slider.dart';
+import 'package:zoodex_walk/features/homePage/presentation/widgets/winner_page.dart';
 import 'package:zoodex_walk/shared/widgets/test.dart';
 
 class HomePage extends StatefulWidget {
@@ -81,6 +82,23 @@ class _HomePageState extends State<HomePage> {
                     child: Text(
                       'خخخخخخخخخ',
                       style: TextStyle(fontSize: 24, color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GiftCardScreen()),
+                  );
+                },
+                child: SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: Text(
+                      'خخخخخخخخخ',
+                      style: TextStyle(fontSize: 24, color: Colors.pinkAccent),
                     ),
                   ),
                 ),
