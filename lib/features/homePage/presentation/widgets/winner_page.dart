@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:zoodex_walk/features/homePage/presentation/widgets/animated_icons.dart';
 
@@ -9,27 +11,34 @@ class GiftCardScreen extends StatefulWidget {
 }
 
 class _GiftCardScreenState extends State<GiftCardScreen> {
+  // استفاده از مسیرهای جدید و حذف سایز ثابت
   static const List<Map<String, dynamic>> _uniqueAssets = [
-    {'path': 'assets/star.png', 'size': 30.0},
-    {'path': 'assets/curve.png', 'size': 30.0},
+    {'path': 'assets/star.png'}, 
+    {'path': 'assets/curve.png'}, 
   ];
 
   List<Widget> _buildImageSpawners(int spawnCount) {
     List<Widget> spawners = [];
-
+    final Random random = Random();
+    
     for (var asset in _uniqueAssets) {
       spawners.addAll(
         List.generate(
           spawnCount,
-          (index) => TwoPhaseIconMover(
-            key: ValueKey('${asset['path']}_$index'),
-            imageAssetPath: asset['path'] as String,
-            imageSize: asset['size'] as double,
-          ),
+          (index) {
+            // محاسبه سایز تصادفی بین 20.0 تا 30.0
+            final double randomSize = random.nextDouble() * 30.0 + 20.0;
+            
+            return TwoPhaseIconMover(
+              key: ValueKey('${asset['path']}_$index'), 
+              imageAssetPath: asset['path'] as String,
+              imageSize: randomSize, // اعمال سایز تصادفی
+            );
+          },
         ),
       );
     }
-
+    
     return spawners;
   }
 
@@ -37,8 +46,8 @@ class _GiftCardScreenState extends State<GiftCardScreen> {
   Widget build(BuildContext context) {
     const double cardWidth = 300;
     const double cardHeight = 400;
-
-    const int desiredSpawnCount = 7;
+    
+    const int desiredSpawnCount = 4; 
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -67,7 +76,7 @@ class _GiftCardScreenState extends State<GiftCardScreen> {
           alignment: Alignment.center,
           children: <Widget>[
             ..._buildImageSpawners(desiredSpawnCount),
-
+            
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40.0),
               child: Column(
@@ -123,7 +132,10 @@ class _GiftCardScreenState extends State<GiftCardScreen> {
                                   color: Colors.black87,
                                 ),
                               ),
-                              Image.asset('assets/12.png', height: 200),
+                              Image.asset(
+                                'assets/12.png', 
+                                height: 200,
+                              ),
                               const Column(
                                 children: [
                                   Text(
@@ -155,7 +167,7 @@ class _GiftCardScreenState extends State<GiftCardScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50), 
                 ],
               ),
             ),

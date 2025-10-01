@@ -21,13 +21,15 @@ class _TwoPhaseIconMoverState extends State<TwoPhaseIconMover>
   late Animation<Offset> _phase1Animation;
 
   late AnimationController _phase2Controller;
+  late Animation<Offset> _phase2Animation; // Tween جدید برای حرکت تصادفی فاز ۲
   
   late Random _random;
 
   Offset _baseOffset = Offset.zero;
+  Offset _currentPhase2Offset = Offset.zero; 
+  Offset _lastPhase2Offset = Offset.zero; 
 
   late double _circularRadius;
-  late double _circularFrequency;
   late double _phase2DurationSeconds;
 
   static const double cardWidth = 300.0;
@@ -40,18 +42,49 @@ class _TwoPhaseIconMoverState extends State<TwoPhaseIconMover>
 
     _circularRadius = _random.nextDouble() * 5.0 + 5.0;
     
-    _circularFrequency = (_random.nextInt(2) + 1).toDouble(); 
-    
-    _phase2DurationSeconds = _random.nextDouble() * 2.0 + 3.5; 
+    _phase2DurationSeconds = _random.nextDouble() * 0.5 + 1.0; 
 
-    double randomX = _random.nextDouble() * 10 + cardWidth / 2;
-    double randomY = _random.nextDouble() * 10 + cardHeight / 2;
-    if (_random.nextBool()) randomX *= -1;
-    if (_random.nextBool()) randomY *= -1;
+    const double cardHalfWidth = cardWidth / 2;
+    const double cardHalfHeight = cardHeight / 2;
+    const double outerMargin = 30.0;
+
+    double randomX = 0;
+    double randomY = 0;
+
+    final bool forceHorizontal = _random.nextBool(); 
+
+    if (forceHorizontal) {
+        double xMagnitude = _random.nextDouble() * outerMargin + cardHalfWidth; 
+
+        double randomFractionY = _random.nextDouble() * 2 - 1;
+        randomY = randomFractionY * cardHalfHeight;
+        
+        if (_random.nextBool()) xMagnitude *= -1;
+
+        randomX = xMagnitude;
+
+    } else {
+        double yMagnitude = _random.nextDouble() * outerMargin + cardHalfHeight;
+
+        double randomFractionX = _random.nextDouble() * 2 - 1;
+        randomX = randomFractionX * cardHalfWidth;
+
+        if (_random.nextBool()) yMagnitude *= -1;
+
+        randomY = yMagnitude;
+    }
     
     _baseOffset = Offset(randomX, randomY); 
 
-    final targetOffsetPhase1 = _baseOffset + Offset(_circularRadius, 0);
+    // تعریف اولین نقطه آفست کوچک فاز ۲ که فاز ۱ به آن می‌رسد
+    final Offset initialPhase2Offset = Offset(_circularRadius, 0);
+    
+    // نقطه پایان فاز ۱ (نقطه شروع حرکت تصادفی)
+    final targetOffsetPhase1 = _baseOffset + initialPhase2Offset;
+
+    // مقداردهی اولیه آفست‌های فاز ۲ برای اطمینان از شروع نرم فاز ۲ (FIX)
+    _currentPhase2Offset = initialPhase2Offset; 
+    _lastPhase2Offset = initialPhase2Offset; 
 
 
     _phase1Controller = AnimationController(
@@ -79,10 +112,39 @@ class _TwoPhaseIconMoverState extends State<TwoPhaseIconMover>
       vsync: this,
       duration: Duration(milliseconds: (_phase2DurationSeconds * 1000).toInt()),
     );
+    
+    _phase2Controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _startPhase2(); // تکرار تصادفی
+      }
+    });
   }
 
+  // ایجاد حرکت نرم و تصادفی درون شعاع دایره
   void _startPhase2() {
-    _phase2Controller.repeat();
+    // _lastPhase2Offset اکنون مقداردهی شده است (یا از initState یا از انتهای انیمیشن قبلی)
+    _lastPhase2Offset = _currentPhase2Offset;
+
+    // تولید نقطه هدف تصادفی جدید (آفست از مرکز دایره)
+    double theta = _random.nextDouble() * 2 * pi;
+    double r = _random.nextDouble() * _circularRadius;
+    
+    Offset nextPhase2Offset = Offset(
+      r * cos(theta),
+      r * sin(theta),
+    );
+    
+    // تعریف انیمیشن بین نقطه فعلی و نقطه هدف جدید
+    // شروع انیمیشن فاز ۲ اکنون از نقطه‌ای است که فاز ۱ به آن رسیده‌ است
+    _phase2Animation = Tween<Offset>(
+      begin: _lastPhase2Offset,
+      end: nextPhase2Offset,
+    ).animate(CurvedAnimation(
+      parent: _phase2Controller,
+      curve: Curves.easeInOutSine, // منحنی نرم برای حرکت
+    ));
+
+    _phase2Controller.forward(from: 0.0);
   }
 
   @override
@@ -102,14 +164,9 @@ class _TwoPhaseIconMoverState extends State<TwoPhaseIconMover>
         if (_phase1Controller.status != AnimationStatus.completed) {
           currentOffset = _phase1Animation.value;
         } else {
-          double angle = _phase2Controller.value * 2 * pi;
-          
-          Offset phase2SmallOffset = Offset(
-            _circularRadius * cos(angle * _circularFrequency),
-            _circularRadius * sin(angle * _circularFrequency),
-          );
-
-          currentOffset = _baseOffset + phase2SmallOffset;
+          // در فاز ۲، آفست فعلی درون دایره از انیمیشن جدید گرفته می‌شود
+          _currentPhase2Offset = _phase2Animation.value;
+          currentOffset = _baseOffset + _currentPhase2Offset;
         }
 
         return Transform.translate(
