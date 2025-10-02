@@ -11,7 +11,6 @@ class GiftCardScreen extends StatefulWidget {
 }
 
 class _GiftCardScreenState extends State<GiftCardScreen> {
-  // استفاده از مسیرهای جدید و حذف سایز ثابت
   static const List<Map<String, dynamic>> _uniqueAssets = [
     {'path': 'assets/star.png'}, 
     {'path': 'assets/curve.png'}, 
@@ -47,7 +46,7 @@ class _GiftCardScreenState extends State<GiftCardScreen> {
     const double cardWidth = 300;
     const double cardHeight = 400;
     
-    const int desiredSpawnCount = 4; 
+    const int desiredSpawnCount = 5; 
 
     return Directionality(
       textDirection: TextDirection.rtl,
