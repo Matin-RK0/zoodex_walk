@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -333,7 +335,7 @@ class _StyledExpansionTileState extends State<StyledExpansionTile>
             ...widget.openingHours.entries.map((e) {
               final isToday = e.key == widget.todayKey;
               return _buildRow(e.key, e.value, highlight: isToday);
-            }).toList(),
+            }),
           if (_isExpanded) const SizedBox(height: 16),
         ],
       ),
@@ -529,9 +531,9 @@ class RatingsSummaryCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (i) {
         IconData icon;
-        if (rating >= i + 1)
+        if (rating >= i + 1) {
           icon = Icons.star;
-        else if (rating > i)
+        } else if (rating > i)
           icon = Icons.star_half;
         else
           icon = Icons.star_border;

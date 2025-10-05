@@ -87,8 +87,6 @@ class _CurvedCarouselState extends State<CurvedCarousel> {
                     controller: _controller,
                     itemCount: fakeItemCount,
                     itemBuilder: (context, index) {
-                      // اندیس واقعی برای تصاویر
-                      final realIndex = index % itemCount;
 
                       return AnimatedBuilder(
                         animation: _controller,
